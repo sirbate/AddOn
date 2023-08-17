@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Panel de ChatGPT</title>
+    <style>
+        /* Estilos para todo el contenido del panel de tareas */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+            max-width: 350px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link rel="stylesheet"
+        href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" />
+
+    <!-- Template styles -->
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <h1>Format Wise with AI</h1>
+    <div>
+        <p>Por favor, selecciona los valores en los campos a continuación para poder crear el contrato deseado.</p>
+
+        <p>Tipo de Contrato:*</p>
+        <select id="contractType">
+            <option value="Contrato de trabajo">Contrato de trabajo</option>
+            <option value="Contrato de servicios">Contrato de servicios</option>
+            <option value="Contrato de arrendamiento">Contrato de arrendamiento</option>
+            <option value="Contrato de compraventa">Contrato de compraventa</option>
+            <option value="Contrato de confidencialidad">Contrato de confidencialidad</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="sltCountry" class="label__custom" data-i18n="{{lang-country}}">Country</label> <span
+            class="asterisk">*</span> <i id="infoCountry" class="fa__info fas fa-info-circle bgc-dark"></i>
+        <select class="selectpicker select__picker form-control-sm" id="country" required="true">
+            <option value="Colombia">Colombia</option>
+            <option value="España">España</option>
+            <option value="Mexico">México</option>
+            <option value="Estados Unidos">Estados unidos</option>
+        </select>
+    </div>
+
+    <div>
+        <p>Ingresa datos adicionales: </p>
+        <input type="text" id="additionalData" />
+    </div>
+
+    
+    <div>
+        
+        <p>Seleccione el estilo: *</p>
+        <select id="contractStyle">
+            <option value="Formal">Formal</option>
+            <option value="Técnico">Técnico</option>
+            <option value="Amigable">Amigable</option>
+            <option value="Casual">Casual</option>
+            <option value="Negocio">Negocio</option>
+            <option value="Creativo">Creativo</option>
+            <option value="Descriptivo">Descriptivo</option>
+        </select>
+    </div>
+    <div>
+        <p>Seleccione el tono: *</p>
+        <select id="messageTone">
+            <option value="Profesional">Profesional</option>
+            <option value="Enojado">Enojado</option>
+            <option value="Asertivo">Asertivo</option>
+            <option value="Seguro">Seguro</option>
+            <option value="Cooperativo">Cooperativo</option>
+            <option value="Serio">Serio</option>
+            <option value="Empático">Empático</option>
+        </select>
+    </div>
+    <div>
+        <button id="generar-descripcion">Generar Contrato</button>
+    </div>
+    <label id="labelDepuracion"></label>
+</body>
+
+</html>
