@@ -94,3 +94,22 @@ button {
 .required {
     color: red;
 }
+#generar-descripcion {
+    /* Estilos por defecto */
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 10px;
+
+    /* Estilos cuando está deshabilitado */
+    &:disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
+}

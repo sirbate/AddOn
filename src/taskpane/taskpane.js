@@ -17,6 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   contractTypeSelect.addEventListener("change", function () {
     console.log('Ha cambiado algo');
+
+     // Habilitar o deshabilitar el botón según la selección de contrato
+     if (contractTypeSelect.value === "Selecciona una opción") {
+      generarDescripcionButton.disabled = true; // Deshabilitar el botón
+  } else {
+      generarDescripcionButton.disabled = false; // Habilitar el botón
+  }
+
     for (const contractTypeView of contractTypeViews) {
       if (contractTypeSelect.value === "Contrato de trabajo") {
         contractTypeView.style.display = "block";
