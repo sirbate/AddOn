@@ -64,10 +64,11 @@ input {
     box-sizing: border-box;
 }
 
-button {
+/* Estilo cuando el botón está habilitado */
+#generar-descripcion:enabled {
     width: 100%;
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    padding: 10px 20px; 
+    background-color: #45AF50;
     color: white;
     border: none;
     cursor: pointer;
@@ -94,22 +95,16 @@ button {
 .required {
     color: red;
 }
+
+/* Estilo cuando el botón está deshabilitado */
 #generar-descripcion {
-    /* Estilos por defecto */
+    background-color: #ccc; /* Color de fondo cuando deshabilitado */
+    color: #999; /* Color del texto cuando deshabilitado */
+    cursor: not-allowed; /* Cambia el cursor al indicador de no permitido */
     width: 100%;
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
     border: none;
-    cursor: pointer;
     border-radius: 4px;
     font-size: 16px;
     margin-top: 10px;
-
-    /* Estilos cuando está deshabilitado */
-    &:disabled {
-        background-color: #ccc;
-        color: #666;
-        cursor: not-allowed;
-    }
 }

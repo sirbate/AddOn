@@ -12,18 +12,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const leaseTypeViews = document.getElementsByClassName("leaseTypeView");
   const tradeTypeViews = document.getElementsByClassName("tradeTypeView");
   const agreementTypeViews = document.getElementsByClassName("agreementTypeView");
+  const buttom = document.getElementById("generar-descripcion"); 
 
 
 
   contractTypeSelect.addEventListener("change", function () {
     console.log('Ha cambiado algo');
 
-     // Habilitar o deshabilitar el botón según la selección de contrato
-     if (contractTypeSelect.value === "Selecciona una opción") {
-      generarDescripcionButton.disabled = true; // Deshabilitar el botón
-  } else {
-      generarDescripcionButton.disabled = false; // Habilitar el botón
-  }
+    // Habilitar o deshabilitar el botón según la selección de contrato
+    for (const contractTypeView of contractTypeViews) {
+      if (contractTypeSelect.value === "Selecciona una opción") {
+        buttom.disabled = true; // Deshabilitar el botón
+      } else {
+        buttom.disabled = false; // Habilitar el botón
+      }
+    }
+
+
+
 
     for (const contractTypeView of contractTypeViews) {
       if (contractTypeSelect.value === "Contrato de trabajo") {
