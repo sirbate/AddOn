@@ -4,9 +4,12 @@ html {
     position: relative;
     min-height: 100%;
 }
+
 body {
-    margin: 0 0 40px; /* bottom = footer height */
+    margin: 0 0 40px;
+    /* bottom = footer height */
 }
+
 .footer {
     position: absolute;
     left: 0;
@@ -32,4 +35,62 @@ body {
     margin: 0;
     padding: 18px 15px;
     min-width: inherit;
+}
+
+/* Estilos para todo el contenido del panel de tareas */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    padding: 20px;
+    max-width: 350px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+/* Vista según el tipo de Contrato seleccionado */
+.contractTypeView {
+    display: none;
+}
+.ServiceTypeView {
+    display: none;
+}
+.leaseTypeView {
+    display: none;
+}
+.tradeTypeView {
+    display: none;
+}
+.agreementTypeView{
+    display: none;
+}
+.required {
+    color: red;
 }

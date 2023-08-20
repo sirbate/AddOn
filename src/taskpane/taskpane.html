@@ -56,22 +56,8 @@
 </head>
 
 <body>
-    <h1>Format Wise with AI</h1>
-    <div>
-        <p>Por favor, selecciona los valores en los campos a continuación para poder crear el contrato deseado.</p>
-
-        <p>Tipo de Contrato:*</p>
-        <select id="contractType">
-            <option value="Contrato de trabajo">Contrato de trabajo</option>
-            <option value="Contrato de servicios">Contrato de servicios</option>
-            <option value="Contrato de arrendamiento">Contrato de arrendamiento</option>
-            <option value="Contrato de compraventa">Contrato de compraventa</option>
-            <option value="Contrato de confidencialidad">Contrato de confidencialidad</option>
-        </select>
-    </div>
     <div class="form-group">
-        <label for="sltCountry" class="label__custom" data-i18n="{{lang-country}}">Country</label> <span
-            class="asterisk">*</span> <i id="infoCountry" class="fa__info fas fa-info-circle bgc-dark"></i>
+        <label for="sltCountry" class="label__custom" data-i18n="{{lang-country}}">País de referencia</label> <span class="required">*</span> <i id="required" class="fa__info fas fa-info-circle bgc-dark"></i>
         <select class="selectpicker select__picker form-control-sm" id="country" required="true">
             <option value="Colombia">Colombia</option>
             <option value="España">España</option>
@@ -80,37 +66,183 @@
         </select>
     </div>
 
+
+    <h1>Format Wise with AI</h1>
     <div>
-        <p>Ingresa datos adicionales: </p>
-        <input type="text" id="additionalData" />
+        <p>Por favor, selecciona los valores en los campos a continuación para poder crear el contrato deseado.
+        </p>
+
+        <p>Tipo de Contrato <span class="required">*</span></p>
+        <select id="contractType">
+            <option value="Selecciona una opción">Selecciona una opción</option>
+            <option value="Contrato de trabajo">Contrato de trabajo</option>
+            <option value="Contrato de servicios">Contrato de servicios</option>
+            <option value="Contrato de arrendamiento">Contrato de arrendamiento</option>
+            <option value="Contrato de compraventa">Contrato de compraventa</option>
+            <option value="Acuerdo de confidencialidad">Acuerdo de confidencialidad</option>
+        </select>
     </div>
 
-    
-    <div>
+    <!-- Aqui iran las secciones generadas por chatgpt para cada tipo de contrato-->
+
+
+    <!-- Tipo de Contrato de TRABAJO -->
+
+    <div class="contractTypeView">
+        <p>Nombre <span class="required">*</span></p>
+        <input type="text" id="nombre" />
+    </div>
+    <div class="contractTypeView">
+        <p>Fecha de Inicio <span class="required">*</span></p>
+        <input type="date" id="fechaInicio" />
+    </div>
+    <div class="contractTypeView">
+        <p>Fecha Final <span class="required">*</span></p>
+        <input type="date" id="fechaFinal" />
+    </div>
+    <div class="contractTypeView">
+        <p>Salario <span class="required">*</span></p>
+        <input type="text" id="salario" />
+    </div>
+    <div class="contractTypeView">
+        <p>Lugar de Trabajo <span class="required">*</span></p>
+        <input type="text" id="lugarTrabajo" />
+    </div>
+    <div class="contractTypeView">
+        <p>Horario <span class="required">*</span></p>
+        <input type="text" id="horario" />
+    </div>
+    <div class="contractTypeView">
+        <p>Firma <span class="required">*</span></p>
+        <input type="text" id="firma" />
+    </div>
+
+    <!-- Tipo de Contrato de SERVICIOS -->
+
+    <div class="ServiceTypeView">
+        <p>Nombre de las Partes Contratantes <span class="required">*</span></p>
+        <input type="text" id="partesContratantes" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Objeto del Contrato <span class="required">*</span></p>
+        <input type="text" id="objetoContrato" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Duración del Contrato <span class="required">*</span></p>
+        <input type="text" id="duracionContrato" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Compromiso de Pago <span class="required">*</span></p>
+        <input type="text" id="compromisoPago" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Clausula de No Competencia <span class="required">*</span></p>
+        <input type="text" id="clausulaNoCompetencia" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Responsabilidad de Cada Parte <span class="required">*</span></p>
+        <input type="text" id="responsabilidadParte" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Información de Contacto <span class="required">*</span></p>
+        <input type="text" id="informacionContacto" />
+    </div>
+    <div class="ServiceTypeView">
+        <p>Firmas de las Partes <span class="required">*</span></p>
+        <input type="text" id="firmasPartes" />
+    </div>
+
+    <!-- Tipo de Contrato de ARRENDAMIENTO -->
+
+    <div class="leaseTypeView">
+        <p >Fecha de Inicio <span class="required">*</span></p>
+        <input type="date" id="arrendamientoFechaInicio" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Fecha de Fin <span class="required">*</span></p>
+        <input type="date" id="arrendamientoFechaFin" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Inquilino <span class="required">*</span></p>
+        <input type="text" id="arrendamientoInquilino" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Propietario <span class="required">*</span></p>
+        <input type="text" id="arrendamientoPropietario" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Inmueble <span class="required">*</span></p>
+        <input type="text" id="arrendamientoInmueble" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Valor del Arriendo <span class="required">*</span></p>
+        <input type="text" id="arrendamientoValorArriendo" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Duración del Contrato <span class="required">*</span></p>
+        <input type="text" id="arrendamientoDuracionContrato" />
+    </div>
+    <div class="leaseTypeView">
+        <p >Firmas <span class="required">*</span></p>
+        <input type="text" id="arrendamientoFirmas" />
+    </div>
+
+        <!-- Tipo de Contrato de COMPRAVENTA -->
+
+        <div class="tradeTypeView">
+            <p >Contrato de Venta <span class="required">*</span></p>
+            <input type="text" id="ventaContrato" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Fecha <span class="required">*</span></p>
+            <input type="date" id="ventaFecha" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Partes <span class="required">*</span></p>
+            <input type="text" id="ventaPartes" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Objeto <span class="required">*</span></p>
+            <input type="text" id="ventaObjeto" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Precio <span class="required">*</span></p>
+            <input type="text" id="ventaPrecio" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Forma de Pago <span class="required">*</span></p>
+            <input type="text" id="ventaFormaPago" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Plazo de Entrega <span class="required">*</span></p>
+            <input type="text" id="ventaPlazoEntrega" />
+        </div>
+        <div class="tradeTypeView">
+            <p >Lugar de Entrega <span class="required">*</span></p>
+            <input type="text" id="ventaLugarEntrega" />
+        </div>
+
+        <!-- Acuerdo de CONFIDENCIALIDAD -->
+
+        <div class="agreementTypeView">
+            <p >Identificación de las Partes <span class="required">*</span></p>
+            <input type="text" id="identificacionPartes" />
+        </div>
+        <div class="agreementTypeView">
+            <p >Objeto <span class="required">*</span></p>
+            <input type="text" id="objetoAcuerdo" />
+        </div>
+        <div class="agreementTypeView">
+            <p >Duración <span class="required">*</span></p>
+            <input type="text" id="duracionAcuerdo" />
+        </div>
+        <div class="agreementTypeView">
+            <p >Clausulas Adicionales <span class="required">*</span></p>
+            <input type="text" id="clausulasAdicionales" />
+        </div>
         
-        <p>Seleccione el estilo: *</p>
-        <select id="contractStyle">
-            <option value="Formal">Formal</option>
-            <option value="Técnico">Técnico</option>
-            <option value="Amigable">Amigable</option>
-            <option value="Casual">Casual</option>
-            <option value="Negocio">Negocio</option>
-            <option value="Creativo">Creativo</option>
-            <option value="Descriptivo">Descriptivo</option>
-        </select>
-    </div>
-    <div>
-        <p>Seleccione el tono: *</p>
-        <select id="messageTone">
-            <option value="Profesional">Profesional</option>
-            <option value="Enojado">Enojado</option>
-            <option value="Asertivo">Asertivo</option>
-            <option value="Seguro">Seguro</option>
-            <option value="Cooperativo">Cooperativo</option>
-            <option value="Serio">Serio</option>
-            <option value="Empático">Empático</option>
-        </select>
-    </div>
+        
+    <!-- Boton xd -->
     <div>
         <button id="generar-descripcion">Generar Contrato</button>
     </div>
