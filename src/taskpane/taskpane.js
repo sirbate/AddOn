@@ -215,9 +215,9 @@ async function generarDescripcion() {
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", `Bearer ${atob("c2stUjhaZXMxdm9tQmEwYjVZd0k3eElUM0JsYmtGSjlkTURFVVFCRXh0NHNZVGs1aVlx")}`);
+      myHeaders.append("Authorization", `Bearer ${atob("AbPHZOR4Mxr6RVJsrEFYT3BlbkFJrYVSRBdAHT1fTOKQ4rNP")}`);
 
-      console.log("Token: " + atob("c2stUjhaZXMxdm9tQmEwYjVZd0k3eElUM0JsYmtGSjlkTURFVVFCRXh0NHNZVGs1aVlx"));
+      console.log("Token: " + atob("AbPHZOR4Mxr6RVJsrEFYT3BlbkFJrYVSRBdAHT1fTOKQ4rNP"));
       var raw = JSON.stringify({
         "model": "text-davinci-003",
         "prompt": baseText,
