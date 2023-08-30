@@ -6,13 +6,16 @@ var seccionContracto
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("loading-screen").style.display = "none";
+
+
   const contractTypeSelect = document.getElementById("contractType");
   const contractTypeViews = document.getElementsByClassName("contractTypeView");
   const serviceTypeViews = document.getElementsByClassName("ServiceTypeView");
   const leaseTypeViews = document.getElementsByClassName("leaseTypeView");
   const tradeTypeViews = document.getElementsByClassName("tradeTypeView");
   const agreementTypeViews = document.getElementsByClassName("agreementTypeView");
-  const buttom = document.getElementById("generar-descripcion"); 
+  const boton = document.getElementById("generar-descripcion"); // Agregado
 
 
 
@@ -22,13 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Habilitar o deshabilitar el botón según la selección de contrato
     for (const contractTypeView of contractTypeViews) {
       if (contractTypeSelect.value === "Selecciona una opción") {
-        buttom.disabled = true; // Deshabilitar el botón
+        boton.disabled = true; // Deshabilitar el botón
       } else {
-        buttom.disabled = false; // Habilitar el botón
+        boton.disabled = false; // Habilitar el botón
       }
     }
-
-
 
 
     for (const contractTypeView of contractTypeViews) {
@@ -71,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
 });
 
 Office.onReady((info) => {
@@ -95,8 +97,15 @@ async function tryCatch(callback) {
 
 // Función que se ejecuta al hacer clic en el botón "Generar Descripción"
 async function generarDescripcion() {
+      // Mostrar mensaje personalizado después de hacer clic en el botón
+      var statusMessage = document.getElementById("status-message");
+      statusMessage.textContent = "Generando contrato...";
+
   await Word.run(async (context) => {
     console.log("Ejecutando funcion generarDescripcion");
+
+    // Mostrar pantalla de carga al hacer clic en el botón
+    document.getElementById("loading-screen").style.display = "flex";
     //Obtiene el valor del tipo de Contrato y el pais seleccionados 
     var contractType = document.getElementById("contractType").value;
     var country = document.getElementById("country").value;
@@ -117,12 +126,12 @@ async function generarDescripcion() {
          tener en cuenta el nombre de las contrapartes ${partesContratantes}, el objeto del contrato o sea la razon por la que se hace este contrato ${objetoContrato}, la 
          duracion del contrato ${duracionContrato}, compromiso de pago de las contrapartes ${compromisoPago},a lo mismo si se especifica una responsabilidad de 
          partes ${responsabilidadParte},una clausula de no competencia si aplica ${clausulaNoCompetencia}, informacion de las partes ${informacionContacto}, y 
-         firmas ${firmasPartes}
+         firmas ${firmasPartes}, quiero que el documento tenga titulos grandes, e identicados, en negrita y los detalles que requieras con estilos
         Topic: Contrato de servicios
         Style: Business
         Tone: Professional
         Length: 2000 words
-        Format: Text`;
+        Format: Microsoft Word (con textos, títulos, negritas y otros estilos)`;
       } else if (contractType === "Contrato de trabajo") { // Contrato de TRABAJO
         var nombre = document.getElementById("nombre").value;
         var fechaInicio = document.getElementById("fechaInicio").value;
@@ -215,7 +224,7 @@ async function generarDescripcion() {
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", `Bearer ${atob("c2stQWJQSFpPUjRNeHI2UlZKc3JFRllUM0JsYmtGSnJZVlNSQmRBSFQxZlRPS1E0ck5Q")}`);//Revisar el TOKEN
+      myHeaders.append("Authorization", `Bearer ${atob("c2stQWJQSFpPUjRNeHI2UlZKc3JFRllUM0JsYmtGSnJZVlNSQmRBSFQxZlRPS1E0ck5Q")}`);
 
       console.log("Token: " + atob("c2stQWJQSFpPUjRNeHI2UlZKc3JFRllUM0JsYmtGSnJZVlNSQmRBSFQxZlRPS1E0ck5Q"));
       var raw = JSON.stringify({
@@ -240,6 +249,12 @@ async function generarDescripcion() {
         .then(function (result) {
 
           Office.context.document.setSelectedDataAsync(result.choices[0].text.trim(), { coercionType: Office.CoercionType.Text });
+
+        // Mostrar mensaje de éxito después de insertar el contenido
+        statusMessage.textContent = "";
+        
+        // Ocultar la pantalla de carga una vez que se ha insertado el contenido
+        document.getElementById("loading-screen").style.display = "none";          
         })
         .catch(error => mostrarMensaje('error', error));
 
@@ -259,5 +274,7 @@ function mostrarMensaje(mensaje) {
   var labelDepuracion = document.getElementById('labelDepuracion');
   labelDepuracion.textContent = mensaje;
 }
+
+
 
 

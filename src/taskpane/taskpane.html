@@ -31,17 +31,6 @@
             box-sizing: border-box;
         }
 
-        button {
-            width: 100%;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 16px;
-            margin-top: 10px;
-        }
     </style>
 
     <!-- Office JavaScript API -->
@@ -55,7 +44,18 @@
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<div id="loading-screen" class="loading">
+    <div class="loading-content">
+        <div class="loader"></div>
+        <p id="loading-text">Cargando complemento</p>
+    </div>
+</div>
+
+
+<!-- Agrega un elemento para el mensaje después del botón -->
+<div id="status-message"></div>
+
+
     <div class="form-group">
         <label for="sltCountry" class="label__custom" data-i18n="{{lang-country}}">País de referencia</label> <span class="required">*</span> <i id="required" class="fa__info fas fa-info-circle bgc-dark"></i>
         <select class="selectpicker select__picker form-control-sm" id="country" required="true">
