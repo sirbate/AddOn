@@ -902,6 +902,7 @@ function obtenerBaseText(contractType, country, secciones) {
      firmas, quiero que el documento tenga titulos grandes, e identicados, en negrita y los detalles que requieras con estilos
     Topic: ${contractType} 
     Style: Business
+    Language:Español
     Tone: Professional
     Length: 2000 words
     Format: Markdown`;
