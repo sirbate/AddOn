@@ -1,4 +1,4 @@
-const { generarSolicitud, createRequest } = require('./Javascript/openai');
+const { OpenAiRequest } = require('./Javascript/openai');
 const { recursiveParser } = require('./Javascript/Md2json');
 const MarkdownIt = require('markdown-it');
 const HTMLParser = require('html-to-json-parser');
@@ -480,10 +480,10 @@ $(document).ready(function () {
         G_LANG_MESSAGES = G_LANG_DOM.langMessages[G_LANG_DOM.lang];
 
         // guardamos la selección
-        google.script.run.saveLanguageValue(JSON.stringify({
-          lang: G_LANG_DOM.lang,
-          langValue: G_LANG_DOM.langValue
-        }));
+        // google.script.run.saveLanguageValue(JSON.stringify({
+        //   lang: G_LANG_DOM.lang,
+        //   langValue: G_LANG_DOM.langValue
+        // }));
       }
     } else {
 
@@ -671,8 +671,9 @@ async function MostrarSecciones() {
   SnvaJsApi.toggleLoading(true);
   var prompt = varruirPrompt();
   try {
-    var response = await generarSolicitud(prompt);
-    var output = response.choices[0].text;
+    const output = await OpenAiRequest(prompt);
+    console.log(output);
+
     sectionsTEMP = output;
     console.log(sectionsTEMP);
     return Promise.resolve();
@@ -732,11 +733,11 @@ function procesarDatos(datosSeleccionados) {
     const prompt = "Hola, que significa " + datosSeleccionados[i]; // Tomamos un elemento del arreglo como prompt
     console.log("Esto estamos pidiendo", prompt);
     // Generamos una solicitud a la API de OpenAI
-    generarSolicitud(prompt)
-      .then(response => {
+    OpenAiRequest(prompt)
+      .then(result => {
         // Mostramos la respuesta en la consola
         console.log(`Respuesta para el prompt ${i}:`);
-        console.log(response.choices[0].text);
+        console.log(result);
       })
       .catch(error => {
         console.error(`Error al procesar el prompt ${i}:`, error);
@@ -920,10 +921,8 @@ async function generarYMostrarContrato() {
   var prompt = baseText;
 
   try {
-    var choices = await createRequest(prompt);
-    const text = choices[0].message.content;
-
-    var htmlText = md.render(text, {});
+    var result = await OpenAiRequest(prompt);
+    var htmlText = md.render(result, {});
     const htmlContainer = "<div>" + htmlText + "</div>";
     await imprimirEnWord(htmlContainer);
 
