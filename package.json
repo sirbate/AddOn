@@ -27,7 +27,12 @@
   },
   "dependencies": {
     "core-js": "^3.9.1",
-    "regenerator-runtime": "^0.13.7"
+    "html-to-json-parser": "^1.1.0",
+    "markdown-it": "^13.0.2",
+    "openai": "^4.14.0",
+    "regenerator-runtime": "^0.13.7",
+    "remark-parse": "^11.0.0",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -44,7 +49,7 @@
     "html-loader": "^4.1.0",
     "html-webpack-plugin": "^5.5.0",
     "office-addin-cli": "^1.5.5",
-    "office-addin-debugging": "^5.0.5",
+    "office-addin-debugging": "^5.0.12",
     "office-addin-dev-certs": "^1.11.3",
     "office-addin-lint": "^2.2.5",
     "office-addin-manifest": "^1.12.3",

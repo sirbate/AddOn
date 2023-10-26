@@ -4,8 +4,8 @@
   <Version>1.0.0.0</Version>
   <ProviderName>Sinova S.A.S</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Contract Generator"/>
-  <Description DefaultValue="A template to get started."/>
+  <DisplayName DefaultValue="Inteligent Contract with AI"/>
+  <Description DefaultValue="Inteligent Contract with AI."/>
   <IconUrl DefaultValue="https://localhost:3000/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/icon-64.png"/>
   <SupportUrl DefaultValue="https://www.contoso.com/help"/>

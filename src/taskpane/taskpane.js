@@ -1,3 +1,17 @@
+const { generarSolicitud, createRequest } = require('./Javascript/openai');
+const { recursiveParser } = require('./Javascript/Md2json');
+const MarkdownIt = require('markdown-it');
+const HTMLParser = require('html-to-json-parser');
+var DOMParser = require('xmldom').DOMParser;
+var parser = new DOMParser({
+  errorHandler: {
+    warning: function (w) { },
+    error: function (e) { },
+    fatalError: function (e) { console.error(e) }
+  }
+});
+
+const md = new MarkdownIt();
 
 /**
 * Función que se ejecuta al iniciar la aplicación web.
@@ -554,7 +568,7 @@ document.addEventListener("DOMContentLoaded", function () {
         llenarListaDesplegable();
         agregarCamposDeEntrada();
         console.log(CamposSecciones)
-        
+
 
       })
       .catch(function (error) {
@@ -569,7 +583,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   boton.addEventListener("click", function () {
     var pruebaconsola = SeccionesSeleccionadas(); //Recibe las secciones Seleccionadas
-    console.log(pruebaconsola);
+
     generarYMostrarContrato();
   });
 
@@ -600,38 +614,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
-
-// Función para generar la solicitud a OpenAI
-function generarSolicitud(prompt) {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", `Bearer ${atob("c2stNnQyNG5BZmw5TE1Ba253bWhXQU5UM0JsYmtGSmxkUlY4MkZ0UU12Z0RjZDFlcjZB")}`);
-
-  var raw = JSON.stringify({
-    "model": "text-davinci-003",
-    "prompt": prompt,
-    "max_tokens": 1024,
-    "temperature": 0.5,
-    "n": 1
-  });
-
-  var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-  };
-  return fetch("https://api.openai.com/v1/completions", requestOptions)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error en la llamada a la API: ${response.status} - ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .catch(error => {
-      throw error; // Re-lanza el error para que sea manejado en la función que lo llama.
-    });
-} 
 
 //Funcion que crea Prompt para Secciones
 function varruirPrompt() {
@@ -795,8 +777,6 @@ function agregarCamposDeEntrada() {
     input.value = "";
     input.className = "form-control form-control-sm";
 
-
-
     // Agregar la etiqueta y el campo de entrada al contenedor
     campoContainer.appendChild(label);
     campoContainer.appendChild(space);
@@ -806,10 +786,10 @@ function agregarCamposDeEntrada() {
 
     // Agregar el contenedor al panel de campos adicionales
     pnlOtherFields.appendChild(campoContainer);
-  
+
 
     // Inicializar el tooltip para el ícono de información (delay para permitir que el DOM se actualice)
-    setTimeout(function() {
+    setTimeout(function () {
       $("i[data-content]").popover({
         trigger: "hover",
         placement: "right",
@@ -823,8 +803,6 @@ function agregarCamposDeEntrada() {
  *Funcioon para obtener un arreglo de las SECCIONES por contrato 
  * */
 function getCamposSecciones(contractType) {
-
-
   switch (contractType) {
     case "Work contract":
       return [
@@ -899,11 +877,12 @@ function getCamposSecciones(contractType) {
   }
 }
 
-
 // Función para imprimir la salida en Word
 async function imprimirEnWord(output) {
   await Word.run(async (context) => {
-    Office.context.document.setSelectedDataAsync(output.choices[0].text.trim(), { coercionType: Office.CoercionType.Text });
+    Office.context.document.setSelectedDataAsync(output, {
+      coercionType: Office.CoercionType.Html
+    });
     await context.sync();
   });
 }
@@ -915,9 +894,7 @@ async function imprimirEnWord(output) {
 // Función para obtener el texto base
 function obtenerBaseText(contractType, country, secciones) {
 
-  
-
-    baseText = `Task: Genera un documento para un ${contractType} que se radique con las leyes y lineamientos de ${country},ten en cuenta que debe contener las siguientes
+  baseText = `Task: Genera un documento para un ${contractType} que se radique con las leyes y lineamientos de ${country},ten en cuenta que debe contener las siguientes
      secciones (agrega las secciones que correspondan y se deban validar, por cada sección agrega un texto detallado, ${secciones} ), igualmente a 
      tener en cuenta el nombre de las contrapartes , el objeto del contrato o sea la razon por la que se hace este contrato , la 
      duracion del contrato , compromiso de pago de las contrapartes ,a lo mismo si se especifica una responsabilidad de 
@@ -929,26 +906,34 @@ function obtenerBaseText(contractType, country, secciones) {
     Length: 2000 words
     Format: Markdown`;
 
-
   return baseText;
 }
 
 // Mostrar Contrato GENERADO e imprimirlo
 async function generarYMostrarContrato() {
+
+  SnvaJsApi.toggleLoading(true);
   var contractType = document.getElementById("sltContractType").value;
   var country = document.getElementById("sltCountriesApp").value;
   var secciones = SeccionesSeleccionadas();
-  var baseText = obtenerBaseText(sltContractType, country, secciones);
+  var baseText = obtenerBaseText(contractType, country, secciones);
   var prompt = baseText;
+
   try {
-    var output = await generarSolicitud(prompt);
-    await imprimirEnWord(output);
+    var choices = await createRequest(prompt);
+    const text = choices[0].message.content;
+
+    var htmlText = md.render(text, {});
+    const htmlContainer = "<div>" + htmlText + "</div>";
+    await imprimirEnWord(htmlContainer);
 
     // Ocultar la pantalla de carga una vez que se ha insertado el contenido
   } catch (error) {
     console.error('Error en la generación y muestra del contrato:', error);
     // Mostrar el error en el label de depuración
     mostrarMensaje('Error en la petición: ' + error.message);
+  } finally {
+    SnvaJsApi.toggleLoading(false);
   }
 }
 
