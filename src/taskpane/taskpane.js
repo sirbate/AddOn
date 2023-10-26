@@ -1,4 +1,4 @@
-const { OpenAiRequest } = require('./Javascript/openai');
+const { OpenAiRequest, generarSolicitud  } = require('./Javascript/openai');
 const { recursiveParser } = require('./Javascript/Md2json');
 const MarkdownIt = require('markdown-it');
 const HTMLParser = require('html-to-json-parser');
@@ -663,7 +663,7 @@ async function MostrarSecciones() {
   SnvaJsApi.toggleLoading(true);
   var prompt = varruirPrompt();
   try {
-    const output = await OpenAiRequest(prompt);
+    const output = await generarSolicitud(prompt);
     console.log(output);
 
     sectionsTEMP = output;
