@@ -2,251 +2,156 @@
 <html>
 
 <head>
-    <title>Panel de ChatGPT</title>
-    <style>
-        /* Estilos para todo el contenido del panel de tareas */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            padding: 20px;
-            max-width: 350px;
-        }
+  <base target="_top">
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        p {
-            margin-bottom: 10px;
-        }
+  <!-- Libreria de Jquery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        select,
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 
-    </style>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
 
-    <!-- Office JavaScript API -->
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+  <!-- Agrega los enlaces a los archivos CSS de Bootstrap 4 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 
-    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
-    <link rel="stylesheet"
-        href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" />
+  <!-- Archivos para el manejo de selectpicker -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
-    <!-- Template styles -->
-    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+  <!-- Libreria de Toars -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <link href="Styles/Toastr.css" rel="stylesheet" />
+
+  <!-- Office JavaScript API  -->
+  <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+  <!-- Importar la api para mejorar el manejo del DOM -->
+  <script src="Javascript/DomApi.js"></script>
+
+  <!-- Importar los estilos para normalizar los estilos en todos los navegadores -->
+  <link href="Styles/Normalize.css" rel="stylesheet" />
+
+  <!-- Importar los estilos propios -->
+  <link href="Styles/Stylesheet.css" rel="stylesheet" />
+
+  <!-- Importar los estilos propios de banderas -->
+  <link href="Styles/Flags.css" rel="stylesheet" />
+
+  <!-- Libreria de general de Sinova -->
+  <script src="Javascript/LibSnvaApi.js"></script>
 </head>
 
-<div id="loading-screen" class="loading">
-    <div class="loading-content">
-        <div class="loader"></div>
-        <p id="loading-text">Cargando complemento</p>
+<body>
+
+  <!-- Agregamos el loading del aplicativo -->
+  <div id="loader">
+
+    <div class="text-center">
+      <div class="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <span class="text__loading-normal" id="textLoader">Espera un momento por favor...</span>
     </div>
-</div>
+  </div>
 
+  <!--Main Navigation-->
+  <div class="loader-q"></div>
 
-<!-- Agrega un elemento para el mensaje después del botón -->
-<div id="status-message"></div>
+  <div class="content__language">
+    <span data-i18n="{{lang-country-label}}">Language App</span>
+    <select class="selectpicker select__picker" id="sltCountriesApp">
+      <option data-icon="fa-solid fi fi-co" value="co" data-i18n="{{lang-country-co}}">Colombia</option>
+      <option data-icon="fa-solid fi fi-es" value="es" data-i18n="{{lang-country-es}}">España</option>
+      <option data-icon="fa-solid fi fi-mx" value="mx" data-i18n="{{lang-country-mx}}">México</option>
+      <option data-icon="fa-solid fi fi-us" value="us" data-i18n="{{lang-country-us}}">Estados unidos</option>
+    </select>
+  </div>
 
+  <!--Main layout-->
+  <main class="p-2 mt-1">
+    <p class="text-justify" data-i18n="{{lang-description}}"></p>
+    <form autocomplete="off" class="form__custom" id="frmGenerateFormat">
 
-    <div class="form-group">
-        <label for="sltCountry" class="label__custom" data-i18n="{{lang-country}}">País de referencia</label> <span class="required">*</span> <i id="required" class="fa__info fas fa-info-circle bgc-dark"></i>
-        <select class="selectpicker select__picker form-control-sm" id="country" required="true">
-            <option value="Colombia">Colombia</option>
-            <option value="España">España</option>
-            <option value="Mexico">México</option>
-            <option value="Estados Unidos">Estados unidos</option>
+      <div class="form-group">
+        <label for="sltContractType" class="label__custom" data-i18n="{{lang-contract-type}}">Select contract
+          type</label> <span class="asterisk">*</span> <i id="infoContractType"
+          class="fa__info fas fa-info-circle bgc-dark"></i>
+        <select class="select__picker form-control-sm" id="sltContractType" required="true">
         </select>
-    </div>
+      </div>
 
 
-    <h1>Format Wise with AI</h1>
-    <div>
-        <p>Por favor, selecciona los valores en los campos a continuación para poder crear el contrato deseado.
-        </p>
+      <!-- Aqui iran las secciones generadas por chatgpt para cada tipo de contrato-->
 
-        <p>Tipo de Contrato <span class="required">*</span></p>
-        <select id="contractType">
-            <option value="Selecciona una opción">Selecciona una opción</option>
-            <option value="Contrato de trabajo">Contrato de trabajo</option>
-            <option value="Contrato de servicios">Contrato de servicios</option>
-            <option value="Contrato de arrendamiento">Contrato de arrendamiento</option>
-            <option value="Contrato de compraventa">Contrato de compraventa</option>
-            <option value="Acuerdo de confidencialidad">Acuerdo de confidencialidad</option>
+      <div class="form-group" id="pnlSections1" style="display: none;">
+        <label for="sltSections" class="label__custom" data-i18n="{{lang-section}}">Sections</label> <span
+        class="asterisk">*</span> <i id="infoSections" class="fa__info fas fa-info-circle bgc-dark"></i>
+
+        <!-- <select class="select__picker form-control-s m bootstrap__select"  No cargan las Secciones al utilizar   en la clase  -->
+        <select class="form-control-sm  bootstrap__select select__picker selectpicker" id="contractSections" required="true"  multiple="true">
+          <option value="Selecciona una opción">Selecciona una opción</option>
         </select>
-    </div>
+      </div>
+      <hr>
+      <!-- Lista de campos adicionales -->
+      <div id="pnlOtherFields">
 
-    <!-- Aqui iran las secciones generadas por chatgpt para cada tipo de contrato-->
+      </div>
 
 
-    <!-- Tipo de Contrato de TRABAJO -->
 
-    <div class="contractTypeView">
-        <p>Nombre <span class="required">*</span></p>
-        <input type="text" id="nombre" />
-    </div>
-    <div class="contractTypeView">
-        <p>Fecha de Inicio <span class="required">*</span></p>
-        <input type="date" id="fechaInicio" />
-    </div>
-    <div class="contractTypeView">
-        <p>Fecha Final <span class="required">*</span></p>
-        <input type="date" id="fechaFinal" />
-    </div>
-    <div class="contractTypeView">
-        <p>Salario <span class="required">*</span></p>
-        <input type="text" id="salario" />
-    </div>
-    <div class="contractTypeView">
-        <p>Lugar de Trabajo <span class="required">*</span></p>
-        <input type="text" id="lugarTrabajo" />
-    </div>
-    <div class="contractTypeView">
-        <p>Horario <span class="required">*</span></p>
-        <input type="text" id="horario" />
-    </div>
-    <div class="contractTypeView">
-        <p>Firma <span class="required">*</span></p>
-        <input type="text" id="firma" />
-    </div>
+      <button id="boton-generar" type="button" class="btn btn-primary btn-block"
+        data-i18n="{{lang-button-submit}}" disabled></button>
 
-    <!-- Tipo de Contrato de SERVICIOS -->
+    </form> 
 
-    <div class="ServiceTypeView">
-        <p>Nombre de las Partes Contratantes <span class="required">*</span></p>
-        <input type="text" id="partesContratantes" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Objeto del Contrato <span class="required">*</span></p>
-        <input type="text" id="objetoContrato" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Duración del Contrato <span class="required">*</span></p>
-        <input type="text" id="duracionContrato" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Compromiso de Pago <span class="required">*</span></p>
-        <input type="text" id="compromisoPago" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Clausula de No Competencia <span class="required">*</span></p>
-        <input type="text" id="clausulaNoCompetencia" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Responsabilidad de Cada Parte <span class="required">*</span></p>
-        <input type="text" id="responsabilidadParte" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Información de Contacto <span class="required">*</span></p>
-        <input type="text" id="informacionContacto" />
-    </div>
-    <div class="ServiceTypeView">
-        <p>Firmas de las Partes <span class="required">*</span></p>
-        <input type="text" id="firmasPartes" />
-    </div>
 
-    <!-- Tipo de Contrato de ARRENDAMIENTO -->
+  </main>
+  <!--Main layout-->
 
-    <div class="leaseTypeView">
-        <p >Fecha de Inicio <span class="required">*</span></p>
-        <input type="date" id="arrendamientoFechaInicio" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Fecha de Fin <span class="required">*</span></p>
-        <input type="date" id="arrendamientoFechaFin" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Inquilino <span class="required">*</span></p>
-        <input type="text" id="arrendamientoInquilino" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Propietario <span class="required">*</span></p>
-        <input type="text" id="arrendamientoPropietario" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Inmueble <span class="required">*</span></p>
-        <input type="text" id="arrendamientoInmueble" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Valor del Arriendo <span class="required">*</span></p>
-        <input type="text" id="arrendamientoValorArriendo" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Duración del Contrato <span class="required">*</span></p>
-        <input type="text" id="arrendamientoDuracionContrato" />
-    </div>
-    <div class="leaseTypeView">
-        <p >Firmas <span class="required">*</span></p>
-        <input type="text" id="arrendamientoFirmas" />
-    </div>
-
-        <!-- Tipo de Contrato de COMPRAVENTA -->
-
-        <div class="tradeTypeView">
-            <p >Contrato de Venta <span class="required">*</span></p>
-            <input type="text" id="ventaContrato" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Fecha <span class="required">*</span></p>
-            <input type="date" id="ventaFecha" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Partes <span class="required">*</span></p>
-            <input type="text" id="ventaPartes" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Objeto <span class="required">*</span></p>
-            <input type="text" id="ventaObjeto" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Precio <span class="required">*</span></p>
-            <input type="text" id="ventaPrecio" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Forma de Pago <span class="required">*</span></p>
-            <input type="text" id="ventaFormaPago" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Plazo de Entrega <span class="required">*</span></p>
-            <input type="text" id="ventaPlazoEntrega" />
-        </div>
-        <div class="tradeTypeView">
-            <p >Lugar de Entrega <span class="required">*</span></p>
-            <input type="text" id="ventaLugarEntrega" />
+  <!-- Modal -->
+  <div class="modal fade" id="mdlSuggestions" tabindex="-1" aria-labelledby="mdlSuggestions" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sugerencias</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+            id="btnCloseSuggestions"></button>
         </div>
 
-        <!-- Acuerdo de CONFIDENCIALIDAD -->
+        <div class="modal-body">
+          <ul class="list-group list-group-light" id="pnlContentSuggestions">
 
-        <div class="agreementTypeView">
-            <p >Identificación de las Partes <span class="required">*</span></p>
-            <input type="text" id="identificacionPartes" />
+          </ul>
         </div>
-        <div class="agreementTypeView">
-            <p >Objeto <span class="required">*</span></p>
-            <input type="text" id="objetoAcuerdo" />
-        </div>
-        <div class="agreementTypeView">
-            <p >Duración <span class="required">*</span></p>
-            <input type="text" id="duracionAcuerdo" />
-        </div>
-        <div class="agreementTypeView">
-            <p >Clausulas Adicionales <span class="required">*</span></p>
-            <input type="text" id="clausulasAdicionales" />
-        </div>
-        
-        
-    <!-- Boton xd -->
-    <div>
-        <button id="generar-descripcion" disabled>Generar Contrato</button>
+
+      </div>
     </div>
-    <label id="labelDepuracion"></label>
+  </div>
+
+  <!-- Importar las funciones -->
+  <!--<script src="Javascript/Functions.js"></script> -->
+
 </body>
 
 </html>
