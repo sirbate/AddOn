@@ -648,7 +648,9 @@ function convertirCadenaAJSON(cadena) {
         console.log(json);
         return json;
       } catch (error) {
-        console.error('Error al analizar como JSON:', error);
+        const json = JSON.parse(contenido);
+        return json;
+        //console.error('Error al analizar como JSON:', error);
       }
     }
   
