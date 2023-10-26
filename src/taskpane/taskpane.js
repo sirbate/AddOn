@@ -1,4 +1,4 @@
-const { OpenAiRequest, generarSolicitud  } = require('./Javascript/openai');
+const { OpenAiRequest, generarSolicitud } = require('./Javascript/openai');
 const { recursiveParser } = require('./Javascript/Md2json');
 const MarkdownIt = require('markdown-it');
 const HTMLParser = require('html-to-json-parser');
@@ -635,28 +635,29 @@ function varruirPrompt() {
  */
 
 function convertirCadenaAJSON(cadena) {
+  // Encuentra el contenido entre corchetes utilizando una expresión regular
+  const regex = /\[([^\]]+)\]/g;
+  const matches = cadena.match(regex);
 
-    // Encuentra el contenido entre paréntesis utilizando una expresión regular
-    const regex = /\[([^\]]+)\]/g;
-    const matches = cadena.match(regex);
-  
-    if (matches && matches.length > 1) {
-      const contenido = "[" + matches[1] + "]";
-      try {
-        // Intenta analizar el contenido entre paréntesis como JSON
-        const json = JSON.parse(contenido);
-        console.log(json);
-        return json;
-      } catch (error) {
-        const json = JSON.parse(contenido);
-        return json;
-        //console.error('Error al analizar como JSON:', error);
-      }
+  if (matches && matches.length > 0) {
+    console.log("********************************");
+    const contenido = matches[0];
+    console.log(contenido);
+    try {
+      // Intenta analizar el contenido entre corchetes como JSON
+      const json = JSON.parse(contenido);
+      return json;
+    } catch (error) {
+      console.error('Error al analizar como JSON:', error);
+      // En caso de error, puedes manejarlo como prefieras o devolver un objeto vacío
+      return {};
     }
-  
-    // Si no se pudo obtener o analizar como JSON, devuelve un objeto vacío
-    return {};
   }
+
+  // Si no se encontraron coincidencias, devuelve un objeto vacío
+  return {};
+}
+
 
 /**
  * Genera Secciones desde GPT
