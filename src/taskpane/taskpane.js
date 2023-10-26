@@ -637,11 +637,11 @@ function varruirPrompt() {
 function convertirCadenaAJSON(cadena) {
 
     // Encuentra el contenido entre paréntesis utilizando una expresión regular
-    const regex = /\(([^)]+)\)/;
+    const regex = /\[([^\]]+)\]/g;
     const matches = cadena.match(regex);
   
     if (matches && matches.length > 1) {
-      const contenido = matches[1];
+      const contenido = "[" + matches[1] + "]";
       try {
         // Intenta analizar el contenido entre paréntesis como JSON
         const json = JSON.parse(contenido);
