@@ -480,10 +480,10 @@ $(document).ready(function () {
         G_LANG_MESSAGES = G_LANG_DOM.langMessages[G_LANG_DOM.lang];
 
         // guardamos la selección
-        // google.script.run.saveLanguageValue(JSON.stringify({
-        //   lang: G_LANG_DOM.lang,
-        //   langValue: G_LANG_DOM.langValue
-        // }));
+        /*google.script.run.saveLanguageValue(JSON.stringify({
+          lang: G_LANG_DOM.lang,
+          langValue: G_LANG_DOM.langValue
+        }));*/
       }
     } else {
 
@@ -622,11 +622,11 @@ function varruirPrompt() {
   var country = document.getElementById("sltCountriesApp").value;
   return `"Genera un arreglo de secciones (Minimo 12) para un ${contractType} en ${country}. El arreglo debe contener objetos con 'valor' y 'texto' para cada sección. Siguiendo el formato de la siguiente manera
 
-  [
-      { valor: "Nombre sección", texto: "Nombre sección" },
-      { valor: "Nombre sección", texto: "Nombre sección" },
-      { valor: "Nombre sección", texto: "Nombre sección" }
-  ]
+  ([
+      { "valor": "Nombre sección", "texto": "Nombre sección" },
+      { "valor": "Nombre sección", "texto": "Nombre sección" },
+      { "valor": "Nombre sección", "texto": "Nombre sección" }
+  ])
   `;
 }
 
@@ -635,34 +635,26 @@ function varruirPrompt() {
  */
 
 function convertirCadenaAJSON(cadena) {
-  // Verificar si la cadena contiene el formato de entrada especial
-  if (cadena.includes("=")) {
-    // Extraer la parte después del igual y eliminar espacios en blanco
-    const contenido = cadena.split("=")[1].trim();
 
-    // Intentar analizar la parte después del igual como JSON
-    try {
-      return JSON.parse(contenido);
-    } catch (error) {
-      console.error("Error al analizar la cadena JSON:", error);
-      return null; // Devuelve null en caso de error
+    // Encuentra el contenido entre paréntesis utilizando una expresión regular
+    const regex = /\(([^)]+)\)/;
+    const matches = cadena.match(regex);
+  
+    if (matches && matches.length > 1) {
+      const contenido = matches[1];
+      try {
+        // Intenta analizar el contenido entre paréntesis como JSON
+        const json = JSON.parse(contenido);
+        console.log(json);
+        return json;
+      } catch (error) {
+        console.error('Error al analizar como JSON:', error);
+      }
     }
-  } else {
-    // Reemplazar 'valor' con "valor" y 'texto' con "texto"
-    cadena = cadena.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
-
-    // Reemplazar las comillas simples alrededor de las cadenas con comillas dobles
-    cadena = cadena.replace(/'([^']+)'/g, '"$1"');
-
-    // Intentar analizar la cadena JSON
-    try {
-      return JSON.parse(cadena);
-    } catch (error) {
-      console.error("Error al analizar la cadena JSON:", error);
-      return null; // Devuelve null en caso de error
-    }
+  
+    // Si no se pudo obtener o analizar como JSON, devuelve un objeto vacío
+    return {};
   }
-}
 
 /**
  * Genera Secciones desde GPT
@@ -903,6 +895,7 @@ function obtenerBaseText(contractType, country, secciones) {
      firmas, quiero que el documento tenga titulos grandes, e identicados, en negrita y los detalles que requieras con estilos
     Topic: ${contractType} 
     Style: Business
+    Language:Español
     Tone: Professional
     Length: 2000 words
     Format: Markdown`;
