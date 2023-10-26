@@ -142,7 +142,6 @@ $(document).ready(function () {
    * Permite establecer los datos de configuración 
    **/
   function loadSettingsValues_(response) {
-    console.log(response)
     // Agregamos la lista de paises
     addCountries_(response.countries);
 
@@ -217,7 +216,6 @@ $(document).ready(function () {
 
     // Permite establecer el tema
     generateTopic_(formObject_);
-    console.log("formObject_", formObject_)
 
     // Creamos la variable para almacenar la lista de promisas
     var promiseList_ = [];
@@ -294,7 +292,7 @@ $(document).ready(function () {
       contractType: $("#sltContractType").val(),
       countryValue: $("#sltCountriesApp").val()
     };
-    console.log("formObject_", formObject_);
+
     // Se valida si existe pais y tipo de contrato
     if (contractType_ && country_ && formObject_.contractType && formObject_.countryValue) {
 
@@ -305,7 +303,6 @@ $(document).ready(function () {
 
       // Definimos el objeto a retornar
       formObject_.languageValue = ($("#sltCountriesApp option:selected").attr("data-lang") || "en");
-      console.log("formObjectTWO_", formObject_);
       // Realizamos la consulta de los datos de seccines y los campos a usar
       getSectionsParalls_(formObject_, $select_, $contentFields_);//CAMBIAR
 
@@ -324,7 +321,6 @@ $(document).ready(function () {
    * Peticiones a GPT
   */
   function getSectionsParalls_(formObject_, $select_, $contentFields_) {
-    console.log("formObject_", formObject_);
     // Creamos la variable para almacenar la lista de promisas
     var promiseList_ = [
       new Promise((resolve, reject) => {
@@ -337,7 +333,6 @@ $(document).ready(function () {
 
     // Ejecutamos las promesas
     Promise.all(promiseList_).then(resultArray_ => {
-      console.log("resultArray_", resultArray_)
       // Agregamos los campos en el contenedor
       addFieldsByType_($contentFields_, resultArray_[1]);
 
@@ -567,9 +562,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         llenarListaDesplegable();
         agregarCamposDeEntrada();
-        console.log(CamposSecciones)
-
-
       })
       .catch(function (error) {
         console.error('Error:', error);
@@ -591,8 +583,6 @@ document.addEventListener("DOMContentLoaded", function () {
   *Permite habilitar o deshabilitar el boton
   */
   contractTypeSelect.addEventListener("change", function () {
-    console.log('Ha cambiado algo');
-    console.log(contractTypeSelect);
 
     // Habilitar o deshabilitar el botón según la selección de contrato
     if (
@@ -609,7 +599,6 @@ document.addEventListener("DOMContentLoaded", function () {
       boton.disabled = true; // Deshabilitar el botón
       pnlSections1.style.display = "none"; //Ocultar Secciones
     }
-    console.log(contractTypeSelect);
   });
 
 
@@ -618,7 +607,6 @@ document.addEventListener("DOMContentLoaded", function () {
 //Funcion que crea Prompt para Secciones
 function varruirPrompt() {
   var contractType = document.getElementById("sltContractType").value;
-  console.log(contractType);
   var country = document.getElementById("sltCountriesApp").value;
   return `"Genera un arreglo de secciones (Minimo 12) para un ${contractType} en ${country}. El arreglo debe contener objetos con 'valor' y 'texto' para cada sección. Siguiendo el formato de la siguiente manera
 
@@ -640,9 +628,7 @@ function convertirCadenaAJSON(cadena) {
   const matches = cadena.match(regex);
 
   if (matches && matches.length > 0) {
-    console.log("********************************");
     const contenido = matches[0];
-    console.log(contenido);
     try {
       // Intenta analizar el contenido entre corchetes como JSON
       const json = JSON.parse(contenido);
@@ -667,10 +653,8 @@ async function MostrarSecciones() {
   var prompt = varruirPrompt();
   try {
     const output = await generarSolicitud(prompt);
-    console.log(output);
-
+  
     sectionsTEMP = output;
-    console.log(sectionsTEMP);
     return Promise.resolve();
   } catch (error) {
     console.error('Error al generar y mostrar la respuesta:', error);
@@ -695,12 +679,10 @@ function llenarListaDesplegable() {
     option.value = opcion.valor;
     option.textContent = opcion.texto;
     selectSections.appendChild(option);
-    console.log("Funciona?")
   });
 
   //Inicializar Select Picker
   $("#contractSections").selectpicker("refresh");
-  console.log(selectSections);
 }
 
 /**
@@ -715,8 +697,6 @@ function SeccionesSeleccionadas() {
       selectedSections.push(select.options[i].value);
     }
   }
-  console.log("HE SELECCIONADO EL BOTON");
-  console.log(selectedSections);
 
   return selectedSections;
 }
@@ -726,13 +706,10 @@ function procesarDatos(datosSeleccionados) {
   // Recorremos el arreglo de datos
   for (let i = 0; i < datosSeleccionados.length; i++) {
     const prompt = "Hola, que significa " + datosSeleccionados[i]; // Tomamos un elemento del arreglo como prompt
-    console.log("Esto estamos pidiendo", prompt);
     // Generamos una solicitud a la API de OpenAI
     OpenAiRequest(prompt)
       .then(result => {
         // Mostramos la respuesta en la consola
-        console.log(`Respuesta para el prompt ${i}:`);
-        console.log(result);
       })
       .catch(error => {
         console.error(`Error al procesar el prompt ${i}:`, error);
