@@ -480,10 +480,10 @@ $(document).ready(function () {
         G_LANG_MESSAGES = G_LANG_DOM.langMessages[G_LANG_DOM.lang];
 
         // guardamos la selección
-        google.script.run.saveLanguageValue(JSON.stringify({
+        /*google.script.run.saveLanguageValue(JSON.stringify({
           lang: G_LANG_DOM.lang,
           langValue: G_LANG_DOM.langValue
-        }));
+        }));*/
       }
     } else {
 
